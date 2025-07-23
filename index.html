@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram QR Scanner</title>
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,57 +18,46 @@
             background-color: #f5f5f5;
         }
 
-        button {
-            padding: 10px 20px;
-            background-color: #0088cc;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
         #qr-reader {
             width: 300px;
-            margin-top: 20px;
-            display: none;
         }
     </style>
 </head>
 <body>
 
-<button id="openBtn">Open & Scan QR</button>
-
 <div id="qr-reader"></div>
 <div id="qr-result"></div>
 
 <script>
-    const openBtn = document.getElementById('openBtn');
-    const qrReader = document.getElementById('qr-reader');
-    const qrResult = document.getElementById('qr-result');
-
-    openBtn.addEventListener('click', () => {
-        qrReader.style.display = 'block';
-        startScanner();
-    });
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // make web app full screen
 
     function startScanner() {
         const html5QrCode = new Html5Qrcode('qr-reader');
 
         html5QrCode.start(
-            {facingMode: 'environment'}, // use back camera
+            {facingMode: 'environment'},
             {fps: 10, qrbox: 250},
             qrCodeMessage => {
-                qrResult.innerHTML = `<p>Scanned QR: <strong>${qrCodeMessage}</strong></p>`;
-                html5QrCode.stop();
+                document.getElementById('qr-result').innerHTML = `<p>Scanned QR: <strong>${qrCodeMessage}</strong></p>`;
+
+                // Send the scanned data back to the bot
+                tg.sendData(qrCodeMessage);
+
+                // Stop scanning and close the WebApp automatically
+                html5QrCode.stop().then(() => {
+                    tg.close();
+                });
             },
             errorMessage => {
-                // Ignore errors
+                // Ignore scanning errors
             },
         ).catch(err => {
             console.error('QR Code scanning failed.', err);
         });
     }
+
+    startScanner();
 </script>
 
 </body>
