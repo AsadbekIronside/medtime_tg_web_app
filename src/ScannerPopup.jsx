@@ -4,6 +4,11 @@ export default function QRScannerPopup() {
     const handleScan = () => {
         const tg = window.Telegram.WebApp;
 
+        tg.BackButton.onClick(() => {
+            tg.closeScanQrPopup();
+            tg.close();
+        });
+
         tg.showScanQrPopup(
             {text: 'Klinikadagi ma\'lumotlaringizni olish uchun skaner qiling'},
             (result) => {
