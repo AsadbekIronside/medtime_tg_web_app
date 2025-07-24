@@ -11,7 +11,7 @@ export default function QRScannerPopup() {
 
         // Handle QR code scanning using qrTextReceived
         const onQrTextReceived = (qrText) => {
-            alert(String(qrText));
+            alert(JSON.stringify(qrText));
             if (qrText) {
                 tg.sendData(qrText);
             }
