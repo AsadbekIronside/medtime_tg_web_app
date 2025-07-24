@@ -9,8 +9,6 @@ export default function QRScannerPopup() {
             tg.close();
         });
 
-        tg.disableVerticalSwipes();
-
         tg.showScanQrPopup(
             {text: 'Klinikadagi ma\'lumotlaringizni olish uchun skaner qiling'},
             (result) => {
@@ -32,5 +30,5 @@ export default function QRScannerPopup() {
         handleScan();
     }, []);
 
-    return <div></div>;
+    return <div className="flex items-center justify-center h-screen bg-gray-100"></div>;
 }
