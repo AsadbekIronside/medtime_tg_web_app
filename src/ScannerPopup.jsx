@@ -12,8 +12,10 @@ export default function QRScannerPopup() {
 
                     // Close WebApp after sending data
                     tg.close();
+                    tg.closeScanQrPopup();
                 } else {
                     tg.close(); // Optionally close if canceled
+                    tg.closeScanQrPopup();
                 }
             },
         );
