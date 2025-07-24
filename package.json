@@ -1,0 +1,25 @@
+{
+  "name": "medtime_tg_bot_scanner",
+  "private": true,
+  "version": "1.0.0",
+  "main": "main.jsx",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint root --ext .js,.jsx",
+    "format": "prettier --write \"root/**/*.{js,jsx,json,css,md}\""
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "html5-qrcode": "^2.3.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "tailwindcss": "^4.1.11",
+    "vite": "^7.0.5"
+  }
+}
