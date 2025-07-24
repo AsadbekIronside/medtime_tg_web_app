@@ -1,29 +1,35 @@
 import React, {useEffect} from 'react';
 
 export default function QRScannerPopup() {
-    useEffect(() => {
+    const handleScan = () => {
         const tg = window.Telegram.WebApp;
 
-        // Open the Telegram built-in QR scanner
-        tg.showScanQrPopup({
-            text: 'Klinikadagi ma\'lumotlaringizni olish uchun skaner qiling',
+        tg.BackButton.onClick(() => {
+            tg.closeScanQrPopup();
+            tg.close();
         });
 
-        // Handle QR code scanning using qrTextReceived
-        const onQrTextReceived = (qrText) => {
-            if (qrText) {
-                tg.sendData(qrText);
-            }
-            tg.closeScanQrPopup(); // Close popup
-            tg.close(); // Close the WebApp
-        };
+        tg.disableVerticalSwipes();
 
-        tg.onEvent('qrTextReceived', onQrTextReceived);
+        tg.showScanQrPopup(
+            {text: 'Klinikadagi ma\'lumotlaringizni olish uchun skaner qiling'},
+            (result) => {
+                if (result) {
+                    tg.sendData(result);
 
-        return () => {
-            // Cleanup: remove event listener if component unmounts
-            tg.offEvent('qrTextReceived', onQrTextReceived);
-        };
+                    // Close WebApp after sending data
+                    tg.close();
+                    tg.closeScanQrPopup();
+                } else {
+                    tg.close(); // Optionally close if canceled
+                    tg.closeScanQrPopup();
+                }
+            },
+        );
+    };
+
+    useEffect(() => {
+        handleScan();
     }, []);
 
     return <div></div>;
