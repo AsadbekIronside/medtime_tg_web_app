@@ -5,13 +5,15 @@ export default function QRScannerPopup() {
         const tg = window.Telegram.WebApp;
 
         tg.showScanQrPopup(
-            {text: 'Please scan your QR code'},
+            {text: 'Klinikadagi ma\'lumotlaringizni olish uchun skaner qiling'},
             (result) => {
                 if (result) {
-                    alert(`Scanned QR: ${result}`);
                     tg.sendData(result);
+
+                    // Close WebApp after sending data
+                    tg.close();
                 } else {
-                    alert('QR scanning canceled');
+                    tg.close(); // Optionally close if canceled
                 }
             },
         );
@@ -21,9 +23,5 @@ export default function QRScannerPopup() {
         handleScan();
     }, []);
 
-    return (
-        <div>
-
-        </div>
-    );
+    return <div></div>;
 }
